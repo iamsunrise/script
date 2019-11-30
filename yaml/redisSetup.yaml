@@ -1,0 +1,15 @@
+- hosts: redis 
+  tasks:
+    - name: Create a redis data directory if it does not exist
+      file: 
+        path: /mydata/redis/data/6379
+        state: directory
+        mode: '0777' 
+    - name: Copy redis
+      copy: src=/usr/local/redis dest=/usr/local
+      notify: Create handlers 
+      mode: '0755' 
+  handlers:
+    - name: Create handlers
+      copy: src=/etc/init.d/redis_6379 dest=/etc/init.d/
+      mode: '0755' 
